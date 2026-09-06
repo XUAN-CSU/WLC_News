@@ -1,0 +1,12 @@
+<resources>
+    <style name="Theme.WLCNews" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:navigationBarColor">@color/primary_dark</item>
+        <!-- Keep app content below the system bars (Android 15 enforces
+             edge-to-edge for targetSdk 35, which hides the toolbar icons
+             under the status bar). Opting out restores a normal layout. -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+    </style>
+</resources>

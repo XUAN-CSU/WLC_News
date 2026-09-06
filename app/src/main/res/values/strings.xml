@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">WLC News</string>
+    <string name="home_title">WLC News</string>
+    <string name="english">English</string>
+    <string name="francais">Français</string>
+    <string name="source_npr">NPR</string>
+    <string name="source_wapo">The Washington Post</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="channel_title">Choose a channel</string>
+    <string name="settings">Settings</string>
+    <string name="refresh_download">Refresh / Download</string>
+    <string name="connecting">Connecting…</string>
+    <string name="downloading">Downloading…</string>
+    <string name="no_episodes">No MP3 found in this folder.</string>
+    <string name="need_settings">Please set your server details in Settings first.</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+</resources>
