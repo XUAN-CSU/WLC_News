@@ -13,12 +13,14 @@ object Prefs {
     const val KEY_USER = "sftp_user"
     const val KEY_PASS = "sftp_pass"
     const val KEY_BASE_PATH = "sftp_base_path"
+    const val KEY_DATE_SUFFIX = "date_suffix"
     const val KEY_LAST_DATE = "last_date"
 
     const val DEFAULT_HOST = "8.137.111.186"
     const val DEFAULT_PORT = "22"
     const val DEFAULT_USER = "root"
     const val DEFAULT_BASE_PATH = "/root/Auto_Download_From_NPR/data/voice"
+    const val DEFAULT_DATE_SUFFIX = "_backup"
 
     fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -38,6 +40,10 @@ object Prefs {
     fun basePath(context: Context) =
         sp(context).getString(KEY_BASE_PATH, DEFAULT_BASE_PATH)!!.trimEnd('/')
 
+    /** Appended after the date, e.g. folder "VOICE_20260905_backup". */
+    fun dateSuffix(context: Context) =
+        sp(context).getString(KEY_DATE_SUFFIX, DEFAULT_DATE_SUFFIX)!!
+
     fun save(
         context: Context,
         host: String,
@@ -45,6 +51,7 @@ object Prefs {
         user: String,
         password: String,
         basePath: String,
+        dateSuffix: String,
     ) {
         sp(context).edit()
             .putString(KEY_HOST, host.trim())
@@ -52,6 +59,7 @@ object Prefs {
             .putString(KEY_USER, user.trim())
             .putString(KEY_PASS, password)
             .putString(KEY_BASE_PATH, basePath.trim())
+            .putString(KEY_DATE_SUFFIX, dateSuffix.trim())
             .apply()
     }
 

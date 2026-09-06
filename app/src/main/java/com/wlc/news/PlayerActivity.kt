@@ -140,7 +140,8 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun remoteDirOf(date: String): String = Prefs.basePath(this) + "/VOICE_" + date
+    private fun remoteDirOf(date: String): String =
+        Prefs.basePath(this) + "/VOICE_" + date + Prefs.dateSuffix(this)
 
     private fun dateDir(date: String): File = File(File(filesDir, "voice"), date)
 
@@ -246,10 +247,12 @@ class PlayerActivity : AppCompatActivity() {
                     }
 
                     var index = 0
+                    var newCount = 0
+                    var autoPlayed = false
                     for (ep in built) {
                         index++
+                        val label = ep.filename
                         if (!ep.localFile.exists() || ep.localFile.length() != ep.sizeBytes) {
-                            val label = ep.filename
                             onUi { setStatus("Downloading $index/${built.size}: $label") }
                             var lastUpdate = 0L
                             client.download(ep.remotePath, ep.localFile) { copied, total ->
@@ -260,15 +263,34 @@ class PlayerActivity : AppCompatActivity() {
                                     onUi { setStatus("Downloading $index/${built.size}: $label ($pct%)") }
                                 }
                             }
+                            newCount++
+                            // Auto-play this file the moment it lands; the rest keep
+                            // downloading in the background on this same worker.
+                            if (!autoPlayed) {
+                                autoPlayed = true
+                                val pos = index - 1
+                                val name = label
+                                onUi {
+                                    adapter.notifyDataSetChanged()
+                                    if (mediaPlayer == null) {
+                                        setStatus("Playing $name — downloading the rest…")
+                                        playFile(pos)
+                                    }
+                                }
+                            } else {
+                                onUi { adapter.notifyDataSetChanged() }
+                            }
                         } else {
                             onUi { setStatus("Already downloaded ($index/${built.size})") }
                         }
                     }
+                    val newDown = newCount
                     onUi {
                         adapter.notifyDataSetChanged()
                         setBusy(false)
-                        setStatus("Done — ${built.size} file(s) ready. Tap one to play.")
-                        Toast.makeText(this@PlayerActivity, "Downloaded ${built.size} file(s)", Toast.LENGTH_SHORT).show()
+                        if (newDown > 0) {
+                            Toast.makeText(this@PlayerActivity, "Downloaded $newDown file(s)", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -294,12 +316,10 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun onEpisodeClicked(pos: Int) {
         val ep = episodes.getOrNull(pos) ?: return
-        if (busy) {
-            Toast.makeText(this, "Download in progress — wait a moment", Toast.LENGTH_SHORT).show()
-            return
-        }
         if (ep.downloaded) {
             playFile(pos)
+        } else if (busy) {
+            Toast.makeText(this, "Still downloading — wait for it to finish", Toast.LENGTH_SHORT).show()
         } else {
             downloadSingleThenPlay(pos)
         }

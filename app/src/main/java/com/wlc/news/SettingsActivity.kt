@@ -22,12 +22,14 @@ class SettingsActivity : AppCompatActivity() {
         val etUser = findViewById<EditText>(R.id.etUser)
         val etPass = findViewById<EditText>(R.id.etPass)
         val etBasePath = findViewById<EditText>(R.id.etBasePath)
+        val etSuffix = findViewById<EditText>(R.id.etSuffix)
 
         etHost.setText(Prefs.host(this))
         etPort.setText(Prefs.port(this).toString())
         etUser.setText(Prefs.user(this))
         etPass.setText(Prefs.password(this))
         etBasePath.setText(Prefs.basePath(this))
+        etSuffix.setText(Prefs.dateSuffix(this))
 
         findViewById<MaterialButton>(R.id.btnSave).setOnClickListener {
             val host = etHost.text.toString().trim()
@@ -35,11 +37,12 @@ class SettingsActivity : AppCompatActivity() {
             val user = etUser.text.toString().trim()
             val pass = etPass.text.toString()
             val base = etBasePath.text.toString().trim()
+            val suffix = etSuffix.text.toString().trim()
             if (host.isEmpty() || user.isEmpty() || base.isEmpty()) {
                 Toast.makeText(this, "Host, username and folder are required", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            Prefs.save(this, host, port, user, pass, base)
+            Prefs.save(this, host, port, user, pass, base, suffix)
             Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()
             finish()
         }

@@ -100,13 +100,26 @@
                 android:inputType="textUri" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date folder suffix"
+                android:textColor="#555555"
+                android:layout_marginTop="16dp" />
+            <EditText
+                android:id="@+id/etSuffix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="_backup"
+                android:inputType="text" />
+
+            <TextView
                 android:id="@+id/tvFolderHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:textColor="#999999"
                 android:textSize="12sp"
-                android:text="The date (e.g. VOICE_20260905) is added to this folder automatically. Change the date inside the player screen." />
+                android:text="The app downloads this remote folder:\n[base folder]/VOICE_[date][suffix]\nExample: …/data/voice/VOICE_20260905_backup\nYou can change the date on the player screen." />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSave"
