@@ -118,8 +118,11 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Re-read config in case it changed while we were in Settings.
-        applyDateUi()
+        // Refresh labels in case the base folder changed in Settings, but
+        // NEVER stop playback or reload the list (that would kill the MP3
+        // when the user comes back from the home screen).
+        btnDate.text = "VOICE_$currentDate"
+        tvRemoteDir.text = remoteDirOf(currentDate)
     }
 
     // ---------------------------------------------------------------- dates
